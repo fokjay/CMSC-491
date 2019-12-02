@@ -1,0 +1,23 @@
+#!/bin/bash -e
+# Copyright (C) 2015 Square, Inc.
+# Copyright (C) 2014 CoreOS
+
+ORG_PATH="github.com/square"
+REPO_PATH="${ORG_PATH}/certstrap"
+BUILD_TAG="${TRAVIS_TAG:-dev-$(git rev-parse HEAD | head -c 8)}"
+
+if [[ $BUILD_TAG == v* ]]; then
+  BUILD_TAG=$(echo $BUILD_TAG | cut -c 2-)
+fi
+
+export GOPATH=${PWD}/gopath
+
+rm -f $GOPATH/src/${REPO_PATH}
+mkdir -p $GOPATH/src/${ORG_PATH}
+ln -s ${PWD} $GOPATH/src/${REPO_PATH}
+
+eval $(go env)
+
+GOARCH=amd64 GOOS=linux go build -ldflags "-X main.release=$BUILD_TAG" -o bin/certstrap-${BUILD_TAG}-linux-amd64 ${REPO_PATH}
+GOARCH=amd64 GOOS=darwin go build -ldflags "-X main.release=$BUILD_TAG" -o bin/certstrap-${BUILD_TAG}-darwin-amd64 ${REPO_PATH}
+GOARCH=amd64 GOOS=windows go build -ldflags "-X main.release=$BUILD_TAG" -o bin/certstrap-${BUILD_TAG}-windows-amd64 ${REPO_PATH}
