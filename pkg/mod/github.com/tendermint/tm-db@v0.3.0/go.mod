@@ -15,6 +15,6 @@ require (
 	github.com/syndtr/goleveldb v1.0.1-0.20190923125748-758128399b1d
 	github.com/tecbot/gorocksdb v0.0.0-20191017175515-d217d93fd4c5
 	go.etcd.io/bbolt v1.3.3 // indirect
-	golang.org/x/net v0.0.0-20190628185345-da137c7871d7
+	golang.org/x/net v0.7.0
 	google.golang.org/grpc v1.25.1
 )
